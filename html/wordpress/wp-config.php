@@ -72,6 +72,9 @@ if ($_SERVER && isset($_SERVER['HTTP_HOST'])) {
 }
 
 
+define( 'COOKIE_DOMAIN', 'headless.dev' );
+define( 'COOKIEPATH', '/' );
+
 /* That's all, stop editing! Happy blogging. */
 
 /** Absolute path to the WordPress directory. */
