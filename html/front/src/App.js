@@ -5,7 +5,7 @@ import './App.css';
 class App extends Component {
 
   componentWillMount() {
-    fetch('https://api.headless.dev')
+    fetch('https://api.headless.dev/wp-json/wp/v2/posts')
       .then(response => {
         if (response.ok) {
           return Promise.resolve(response);
