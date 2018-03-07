@@ -3,27 +3,28 @@ import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
-
   componentWillMount() {
-    fetch('https://api.headless.dev/wp-json/wp/v2/posts')
-      .then(response => {
-        if (response.ok) {
-          return Promise.resolve(response);
-        }
-        else {
-          return Promise.reject(new Error('Failed to load'));
-        }
-      })
-      .then(response => response.json()) // parse response as JSON
-      .then(data => {
-        console.log(data);
-      })
-      .catch(function(error) {
-        console.log(`Error: ${error.message}`);
-      });
+    const data = {
+      username: 'admin',
+      password: 'admin',
+    };
+
+    const resp = fetch('https://api.headless.dev/wp-json/jwt-auth/v1/token', {
+      body: JSON.stringify(data), // must match 'Content-Type' header
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      headers: {
+        'content-type': 'application/json',
+      },
+      method: 'POST', // *GET, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, *same-origin
+      redirect: 'follow', // *manual, error
+      referrer: 'no-referrer', // *client
+    }).then((response) => { console.log(response); });// parses response to JSON
+
+    console.log(resp);
   }
 
-  render(){
+  render() {
     return (
       <div className="App">
         <header className="App-header">
@@ -39,6 +40,3 @@ class App extends Component {
 }
 
 export default App;
-
-
-
