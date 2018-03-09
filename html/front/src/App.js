@@ -9,7 +9,7 @@ class App extends Component {
       password: 'admin',
     };
 
-    const resp = fetch('https://api.headless.dev/wp-json/jwt-auth/v1/token', {
+    const resp = fetch('https://api.headless.localhost/wp-json/jwt-auth/v1/token', {
       body: JSON.stringify(data), // must match 'Content-Type' header
       cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
       headers: {
@@ -19,7 +19,20 @@ class App extends Component {
       mode: 'cors', // no-cors, *same-origin
       redirect: 'follow', // *manual, error
       referrer: 'no-referrer', // *client
-    }).then((response) => { console.log(response); });// parses response to JSON
+    }).then(response => response.json())
+      .then((json) => {
+        fetch('https://api.headless.localhost/wp-json/wp/v2/settings', {
+          cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+          headers: {
+            Authorization: `Bearer ${json.token}`,
+            'content-type': 'application/json',
+          },
+          method: 'GET', // *GET, PUT, DELETE, etc.
+          mode: 'cors', // no-cors, *same-origin
+          redirect: 'follow', // *manual, error
+          referrer: 'no-referrer', // *client
+        }).then(response => response.json());
+      });
 
     console.log(resp);
   }

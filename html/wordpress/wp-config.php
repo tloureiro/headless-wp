@@ -71,10 +71,6 @@ if ($_SERVER && isset($_SERVER['HTTP_HOST'])) {
 	define('WP_HOME',    "http://${_SERVER['HTTP_HOST']}");
 }
 
-
-define( 'COOKIE_DOMAIN', 'headless.dev' );
-define( 'COOKIEPATH', '/' );
-
 define('JWT_AUTH_SECRET_KEY', 'secretkey');
 
 /* That's all, stop editing! Happy blogging. */
