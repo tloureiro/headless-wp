@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Cookies from 'js-cookie';
+import axios from 'axios';
 import './App.css';
 
 class App extends Component {
@@ -16,25 +17,19 @@ class App extends Component {
     const token = Cookies.get('token');
 
     if (token) {
-      fetch(`${App.apiBaseURL}/wp-json/jwt-auth/v1/token/validate`, {
-        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      axios.post(`${App.apiBaseURL}/wp-json/jwt-auth/v1/token/validate`, null, {
         headers: {
-          'content-type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        method: 'POST', // *GET, PUT, DELETE, etc.
-        mode: 'cors', // no-cors, *same-origin
-        redirect: 'follow', // *manual, error
-        referrer: 'no-referrer', // *client
-      })
-        .then(response => response.json())
-        .then((json) => {
-          if (json.code === 'jwt_auth_valid_token') {
-            this.setState({ verifyLoginMessage: 'Logged in' });
-          } else {
-            this.setState({ verifyLoginMessage: 'Not logged in' });
-          }
-        });
+      }).then((response) => {
+        if (response.data && response.data.code && response.data.code === 'jwt_auth_valid_token') {
+          this.setState({ verifyLoginMessage: 'Logged in' });
+        } else {
+          this.setState({ verifyLoginMessage: 'Not logged in' });
+        }
+      }).catch(() => {
+        this.setState({ verifyLoginMessage: 'Not able to check' });
+      });
     } else {
       this.setState({ verifyLoginMessage: 'Not logged in' });
     }
@@ -46,31 +41,19 @@ class App extends Component {
       password: 'admin',
     };
 
-    fetch(`${App.apiBaseURL}/wp-json/jwt-auth/v1/token`, {
-      body: JSON.stringify(data), // must match 'Content-Type' header
-      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      headers: {
-        'content-type': 'application/json',
-      },
-      method: 'POST', // *GET, PUT, DELETE, etc.
-      mode: 'cors', // no-cors, *same-origin
-      redirect: 'follow', // *manual, error
-      referrer: 'no-referrer', // *client
-    }).then(response => response.json())
-      .then((json) => {
-        if (json.token) {
-          console.log(json);
-          Cookies.set('token', json.token);
-          this.setState({
-            verifyLoginMessage: 'Logged in',
-            loginMessage: 'Success',
-          });
-        } else {
-          this.setState({
-            loginMessage: 'Failed',
-          });
-        }
+    axios.post(`${App.apiBaseURL}/wp-json/jwt-auth/v1/token`, data).then((response) => {
+      if (response.data && response.data.token) {
+        Cookies.set('token', response.data.token);
+        this.setState({
+          verifyLoginMessage: 'Logged in',
+          loginMessage: 'Success',
+        });
+      }
+    }).catch(() => {
+      this.setState({
+        loginMessage: 'Failed',
       });
+    });
   };
 
   logout = () => {
@@ -90,25 +73,21 @@ class App extends Component {
   checkSettings = () => {
     const token = Cookies.get('token');
 
-    fetch('https://api.headless.localhost/wp-json/wp/v2/settings', {
-      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    axios.get(`${App.apiBaseURL}/wp-json/wp/v2/settings`, {
       headers: {
         Authorization: `Bearer ${token}`,
-        'content-type': 'application/json',
       },
-      method: 'GET', // *GET, PUT, DELETE, etc.
-      mode: 'cors', // no-cors, *same-origin
-      redirect: 'follow', // *manual, error
-      referrer: 'no-referrer', // *client
     }).then((response) => {
-      if (!response.ok) {
-        throw response;
+      if (response.data) {
+        console.log(response.data);
       }
-      return response.json();
-    }).then((json) => {
-      console.log(json);
-    }).catch(error => error.json())
-      .then((jsonError) => { console.log(jsonError); });
+    }).catch((error) => {
+      if (error.response) {
+        console.log(`Error: ${error.response.data.code} - ${error.response.data.message}`);
+      } else {
+        console.log("Error: Couldn't contact API");
+      }
+    });
   };
 
   render() {
