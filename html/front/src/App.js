@@ -79,13 +79,13 @@ class App extends Component {
       },
     }).then((response) => {
       if (response.data) {
-        console.log(response.data);
+        this.setState({ checkSettingsMessage: JSON.stringify(response.data) });
       }
     }).catch((error) => {
       if (error.response) {
-        console.log(`Error: ${error.response.data.code} - ${error.response.data.message}`);
+        this.setState({ checkSettingsMessage: `Error: ${error.response.data.code} - ${error.response.data.message}` });
       } else {
-        console.log("Error: Couldn't contact API");
+        this.setState({ checkSettingsMessage: "Error: Couldn't contact API" });
       }
     });
   };
@@ -114,7 +114,7 @@ class App extends Component {
 
           <div>
             <button onClick={this.checkSettings}>Check Settings</button>
-            <span>&nbsp;{this.state.checkSettingsMessage}</span>
+            <span>{this.state.checkSettingsMessage}</span>
           </div>
         </div>
       </div>
