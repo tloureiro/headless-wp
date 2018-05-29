@@ -1,31 +1,41 @@
 
-import React from 'react'
-import { withRouteData, Switch, Route, Link } from 'react-static'
-//
+import React, { Component } from 'react'
+import { Switch, Route } from 'react-static'
+
 import Post from './Post'
 
-export default withRouteData(({ match, posts }) => (
-  <div>
-    <Switch>
-      <Route
-        path={match.url}
-        exact
-        render={() => (
-          <div>
-            <h1>It's blog time.</h1>
-            <br />
-            All Posts:
-            <ul>
-              {posts.map(post => (
-                <li key={post.id}>
-                  <Link to={`/blog/post/${post.id}/`}>{post.title}</Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      />
-      <Route path={`${match.url}/post/:postID/`} component={Post} />
-    </Switch>
-  </div>
-))
+class Blog extends Component {
+
+  static apiBaseURL = 'https://api.headless.localhost';
+
+  render() {
+    return (
+      <div>
+        <Switch>
+          <Route
+            path="/blog"
+            exact
+            render={() => (
+              <div>
+                <h1>It's blog time.</h1>
+                <br />
+                All Posts:
+                <ul>
+                  {posts.map(post => (
+                    <li key={post.id}>
+                      <Link to={`/blog/post/${post.id}/`}>{post.title.rendered}</Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          />
+          <Route path={`/blog/post/:postID/`} component={Post} />
+        </Switch>
+      </div>
+    )
+  }
+
+}
+
+export default Blog;

@@ -14,13 +14,11 @@ const App = () => (
     <div>
       <nav>
         <Link to="/">Home</Link>
-        <Link to="/about/">About</Link>
         <Link to="/blog/">Blog</Link>
       </nav>
       <div className="content">
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route path="/about" component={About} />
           <Route path="/blog" component={Blog} />
           <Route component={NotFound} />
         </Switch>
