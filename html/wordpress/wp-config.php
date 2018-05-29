@@ -66,10 +66,6 @@ $table_prefix = 'wp_';
 
 define( 'FS_METHOD', 'direct' );
 
-if ($_SERVER && isset($_SERVER['HTTP_HOST'])) {
-	define('WP_SITEURL', "http://${_SERVER['HTTP_HOST']}");
-	define('WP_HOME',    "http://${_SERVER['HTTP_HOST']}");
-}
 
 define('JWT_AUTH_SECRET_KEY', 'secretkey');
 
