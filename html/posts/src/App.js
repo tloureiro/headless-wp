@@ -34,7 +34,6 @@ class App extends Component {
     }
 
     this.setState({ posts });
-
   };
 
   render() {
@@ -54,7 +53,7 @@ class App extends Component {
 
           <Route exact path="/" component={Home}/>
           <Route exact path="/blog" render={() => <Blog posts={this.state.posts}/>} />
-          <Route path="/blog/post/:postSlug" render={(props) => <Post posts={this.state.posts} routerProps={props}/>} />
+          <Route path="/blog/post/:postSlug" render={(routeProps) => <Post posts={this.state.posts} routeProps={routeProps}/>} />
         </div>
       </Router>
     );

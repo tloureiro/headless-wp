@@ -5,7 +5,7 @@ class Post extends Component {
 
   render() {
 
-    const postSlug = this.props.routerProps.match.params.postSlug;
+    const postSlug = this.props.routeProps.match.params.postSlug;
 
     const post = this.props.posts.find((item) => {
       if(item.slug === postSlug){
