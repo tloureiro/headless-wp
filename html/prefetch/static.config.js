@@ -7,7 +7,7 @@ export default {
     title: 'React Static',
   }),
 
-  siteRoot: 'https://headless.localhost',
+  siteRoot: 'https://prefetch.headless.localhost',
 
   async getRoutes() {
 
