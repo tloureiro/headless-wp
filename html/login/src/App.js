@@ -5,12 +5,16 @@ import axios from 'axios';
 import Home from "./components/Home";
 import Blog from "./components/Blog";
 import Post from "./components/Post";
+import Login from "./components/Login";
 
 
 class App extends Component {
 
+  static apiBaseURL = 'https://api.headless.localhost';
+
   state = {
-    posts: []
+    posts: [],
+    isUserLoggedIn: false
   };
 
   componentDidMount(){
@@ -36,6 +40,10 @@ class App extends Component {
     this.setState({ posts });
   };
 
+  setUserLoggedIn = ( isLoggedIn ) => {
+    this.setState({ isUserLoggedIn: isLoggedIn });
+  };
+
   render() {
     return(
       <Router>
@@ -48,7 +56,8 @@ class App extends Component {
               <Link to="/blog">Blog</Link>
             </li>
           </ul>
-
+          {this.state.isUserLoggedIn}
+          <Login isUserLoggedIn={this.state.isUserLoggedIn} setUserLoggedIn={this.setUserLoggedIn}/>
           <hr />
 
           <Route exact path="/" component={Home}/>
