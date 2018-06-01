@@ -66,7 +66,7 @@ $table_prefix = 'wp_';
 
 define( 'FS_METHOD', 'direct' );
 
-
+define('JWT_AUTH_CORS_ENABLE', true);
 define('JWT_AUTH_SECRET_KEY', 'secretkey');
 
 /* That's all, stop editing! Happy blogging. */

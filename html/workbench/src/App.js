@@ -27,7 +27,8 @@ class App extends Component {
         } else {
           this.setState({ verifyLoginMessage: 'Not logged in' });
         }
-      }).catch(() => {
+      }).catch((error) => {
+        console.log(error);
         this.setState({ verifyLoginMessage: 'Not able to check' });
       });
     } else {
