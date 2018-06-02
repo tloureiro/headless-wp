@@ -6,8 +6,6 @@ import Post from './Post'
 
 export default withRouteData(({ match, posts }) => {
 
-  console.log(posts);
-
   return(
   <div>
     <Switch>
@@ -16,8 +14,7 @@ export default withRouteData(({ match, posts }) => {
         exact
         render={() => (
           <div>
-            <h1>It's blog time.</h1>
-            <br />
+            <h1>It's blog time.</h1> <br />
             All Posts:
             <ul>
               {posts.map(post => (
