@@ -8,14 +8,11 @@ import App from "../App";
 class Admin extends Component {
 
   state = {
-    settings: null
+    settings: null,
+    updateFeedback: ''
   };
 
-  componentDidMount() {
-
-  }
-
-  checkSettings = () => {
+  retrieveSettings = () => {
     const token = Cookies.get('token');
 
     axios.get(`${App.apiBaseURL}/wp-json/wp/v2/settings`, {
@@ -36,6 +33,34 @@ class Admin extends Component {
     });
   };
 
+  handleChange = (event) => {
+    const settings = { ...this.state.settings };
+    settings.title = event.target.value;
+    this.setState({ settings });
+  };
+
+  updateTitle = () => {
+    const token = Cookies.get('token');
+
+    const data = { title: this.state.settings.title };
+
+    axios.post(`${App.apiBaseURL}/wp-json/wp/v2/settings`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((response) => {
+      this.setState({
+        updateFeedback: 'Title updated!'
+      });
+    }).catch((error) => {
+      if (error.response) {
+        console.error(`Error: ${error.response.data.code} - ${error.response.data.message}`);
+      } else {
+        console.error("Error: Couldn't contact API");
+      }
+    });
+  };
+
   render() {
 
     if ( ! this.props.isUserLoggedIn ) {
@@ -45,14 +70,23 @@ class Admin extends Component {
     } else {
 
       if ( ! this.state.settings ) {
-        this.checkSettings();
-      }
+        this.retrieveSettings();
+      } else {
 
-      console.log(this.state.settings);
-      return (
-        <div>You are logged in. Retrieving your configurations</div>
-      );
+        return (
+          <div>
+            <label>Title</label>:
+            <input type="text" value={this.state.settings.title} onChange={this.handleChange}/>
+            <button onClick={this.updateTitle}>Update</button>
+            <div>{this.state.updateFeedback}</div>
+          </div>
+        );
+      }
     }
+
+    return (
+      <div>Loading...</div>
+    )
   }
 }
 

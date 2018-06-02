@@ -34,7 +34,6 @@ class App extends Component {
           Authorization: `Bearer ${token}`,
         },
       }).then((response) => {
-        console.log(response);
         if (response.data && response.data.code && response.data.code === 'jwt_auth_valid_token') {
           this.setState({ isUserLoggedIn: true });
         }

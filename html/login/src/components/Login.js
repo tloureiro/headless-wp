@@ -34,6 +34,17 @@ class Login extends Component {
     this.setState({[event.target.name]: event.target.value});
   };
 
+  logout = () => {
+    const token = Cookies.get('token');
+    Cookies.remove('token');
+
+    if (token) {
+      this.props.setUserLoggedIn(false);
+    } else {
+      console.error('You are already logged out');
+    }
+  };
+
   render() {
 
     const form = (
@@ -47,7 +58,7 @@ class Login extends Component {
 
     const loggedIn = (
       <div>
-        User Logged In
+        User Logged In <button onClick={this.logout}>Log out</button>
       </div>
     );
 
