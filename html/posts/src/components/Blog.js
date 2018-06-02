@@ -7,7 +7,6 @@ class Blog extends Component {
   render() {
 
     const posts =  this.props.posts;
-    console.log(posts);
 
     return(
       <div>
